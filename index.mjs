@@ -60,7 +60,6 @@ app.get("/setup", async (req, res) => {
         await pool.query(`
             INSERT INTO q_categories (categoryName) 
             VALUES ('Inspirational'), ('Love'), ('Life'), ('Success'), ('Wisdom')
-            ON CONFLICT (categoryName) DO NOTHING
         `);
         
         res.send(`
