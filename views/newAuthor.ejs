@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Author</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2>Add New Author</h2>
+            </div>
+            <div class="card-body">
+                <% if (typeof message != "undefined"){ %>
+                    <div class="alert alert-success"><%= message %></div>
+                <% } %>
+                
+                <form method="POST" action="/author/new">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" class="form-control" name="fName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" class="form-control" name="lName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" name="dob">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Date of Death</label>
+                            <input type="date" class="form-control" name="deathDate">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Sex</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" name="sex" value="M">
+                            <label class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" name="sex" value="F">
+                            <label class="form-check-label">Female</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Nationality</label>
+                        <input type="text" class="form-control" name="nationality">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Birth Place</label>
+                        <input type="text" class="form-control" name="birthPlace">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Biography</label>
+                        <textarea class="form-control" name="biography" rows="4"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Author</button>
+                    <a href="/" class="btn btn-secondary">Back to Home</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
