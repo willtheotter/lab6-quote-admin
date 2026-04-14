@@ -20,6 +20,65 @@ const pool = new Pool({
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
+app.get("/setup", async (req, res) => {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS q_authors (
+                authorId SERIAL PRIMARY KEY,
+                firstName VARCHAR(100) NOT NULL,
+                lastName VARCHAR(100) NOT NULL,
+                dob DATE,
+                sex CHAR(1),
+                nationality VARCHAR(100),
+                biography TEXT,
+                birthPlace VARCHAR(200),
+                deathDate DATE
+            )
+        `);
+        
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS q_categories (
+                categoryId SERIAL PRIMARY KEY,
+                categoryName VARCHAR(100) NOT NULL
+            )
+        `);
+        
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS q_quotes (
+                quoteId SERIAL PRIMARY KEY,
+                quoteText TEXT NOT NULL,
+                authorId INTEGER REFERENCES q_authors(authorId),
+                categoryId INTEGER REFERENCES q_categories(categoryId),
+                year INTEGER,
+                context TEXT,
+                tags VARCHAR(255),
+                likes INTEGER DEFAULT 0,
+                isApproved BOOLEAN DEFAULT FALSE
+            )
+        `);
+        
+        await pool.query(`
+            INSERT INTO q_categories (categoryName) 
+            VALUES ('Inspirational'), ('Love'), ('Life'), ('Success'), ('Wisdom')
+            ON CONFLICT (categoryName) DO NOTHING
+        `);
+        
+        res.send(`
+            <h1>✅ Database Setup Complete!</h1>
+            <p>Tables created successfully:</p>
+            <ul>
+                <li>q_authors</li>
+                <li>q_categories</li>
+                <li>q_quotes</li>
+            </ul>
+            <p>Default categories added: Inspirational, Love, Life, Success, Wisdom</p>
+            <a href="/">Go to Home Page</a>
+        `);
+    } catch (error) {
+        res.send(`<h1>❌ Error</h1><p>${error.message}</p>`);
+    }
+});
+
 app.get("/", (req, res) => {
     res.render("index");
 });
